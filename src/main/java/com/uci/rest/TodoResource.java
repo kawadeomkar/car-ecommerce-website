@@ -1,7 +1,7 @@
 package com.uci.rest;
 
 /**
- * Created by  on 5/28/17.
+ * Omkar Kawade
  */
 import com.uci.rest.model.Todo;
 import com.uci.rest.model.Cart;
@@ -16,18 +16,11 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.*;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-
-
-/**
- * This class contains the methods that will respond to the various endpoints that you define for your RESTful API Service.
- *
- */
-//todos will be the pathsegment that precedes any path segment specified by @Path on a method.
 @Path("/todos")
 public class TodoResource extends HttpServlet {
 
 
-    //This method represents an endpoint with the URL /todos/{id} and a GET request ( Note that {id} is a placeholder for a path parameter)
+    // /todos/{id} and a GET request 
     @Path("{id}")
     @GET
     @Produces( { MediaType.APPLICATION_JSON }) //This provides only JSON responses
@@ -46,7 +39,7 @@ public class TodoResource extends HttpServlet {
     @Path("/cart/{sessionID}")
     @GET
     @Produces( { MediaType.APPLICATION_JSON }) //This provides only JSON responses
-    public Response getCartById(@PathParam("sessionID") String sessionID/* The {id} placeholder parameter is resolved */) {
+    public Response getCartById(@PathParam("sessionID") String sessionID) {
         //invokes the DB method which will fetch a todo_list item object by id
         System.out.println("GETTING CART BY ID: " + sessionID );
         List<Cart> cart = TodoService.getShoppingCartByID(sessionID);
@@ -59,9 +52,8 @@ public class TodoResource extends HttpServlet {
         //Respond with a 200 OK if you have a todo_list_item object to return as response
         return Response.ok(cart).build();
     }
-
-    //This method represents an endpoint with the URL /todos and a GET request.
-    // Since there is no @PathParam mentioned, the /todos as a relative path and a GET request will invoke this method.
+    
+    // /todos as a relative path GET request
     @GET
     @Produces( { MediaType.APPLICATION_JSON })
     public Response getAllTodos() {
@@ -75,7 +67,6 @@ public class TodoResource extends HttpServlet {
 
         return Response.ok(todoList).build();
     }
-    
     
     
     @Path("/orders")
@@ -93,8 +84,8 @@ public class TodoResource extends HttpServlet {
         return Response.ok(todoList).build();
     }
 
-    //This method represents an endpoint with the URL /todos and a POST request.
-    // Since there is no @PathParam mentioned, the /todos as a relative path and a POST request will invoke this method.
+    // /todos and a POST request.
+    // /todos as a relative path POST request 
     @POST
     @Consumes({MediaType.APPLICATION_JSON}) //This method accepts a request of the JSON type
     public Response addCart() {
@@ -170,18 +161,12 @@ public class TodoResource extends HttpServlet {
         order.setstate(state);
         order.setzipcode(zipcode);
         order.setshippingmethod(shippingmethod);
-        order.setccnumber(ccnumber);
-        
-        
+        order.setccnumber(ccnumber);       
 
         if(TodoService.AddOrder(order)) {
             return Response.ok().entity(" Added Successfully").build();
-        }
-        
-        
+        }    
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-
-
     }
 
     //This method represents a PUT request where the id is provided as a path parameter and the request body is provided in JSON
